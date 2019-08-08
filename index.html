@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello caretaker</title>
+    <link rel="stylesheet" type="text/css" href="project/css/style.css">
+</head>
+<body>
+    <canvas id="canvas_back_ground"></canvas>
+    <ul class="Menu">
+        <li onclick="homePage()"></li>
+        <li onclick="price()"></li>
+        <li onclick="aboutMe()"></li>
+    </ul>
+    <div></div>
+    <div class='hello'>
+        <label  id='helloLab'>Please enter your Name:</label>
+        <input id="helloInp" type="text"  placeholder="Name" maxlength="12" size="20" />
+        <button id="helloButt" onclick='PopUpHide()'>Accept</button>
+    </div>
+    <div></div>
+    <div id="piechart_3d"></div>
+    <div></div>
+    <div></div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+
+    // ================ MODEL ================
+    var tagDiv = document.createElement('div'); // создание тега
+    var tagUl = document.querySelector('ul');
+    var tagUlLi = document.querySelectorAll('ul li'); // пробегаем по всем li
+    var tagAllDivs = document.querySelectorAll('div');
+    var PhotoInst =  tagAllDivs[0];
+    var particles = [];
+
+    var resizeSite =  function () { // хранения  размера страницы
+        w = canvasBody.width = window.innerWidth;
+        h = canvasBody.height = window.innerHeight;
+    };
+    var reSize = function () { //выхывает функцию которая смотрит и подстраиваеться под размер окна
+        clearTimeout(tid);
+        tid = setTimeout(function () {
+            resizeSite();
+        }, delay);
+    };
+    var delay = 200, tid;
+
+    const pointOpts = { //свойства шарика
+        particleColor: "#fff",
+        particleAmount: 100,
+        defaultSpeed: 1,
+        variantSpeed: 1,
+        defaultRadius: 2,
+        variantRadius: 2,
+        linkRadius: 200,
+    };
+    const canvasBody = document.getElementById("canvas_back_ground"),
+        drawArea = canvasBody.getContext("2d");
+
+
+    // ================ VIEW ================
+
+    window.onload = function firstime(){
+        $('.price').hide();
+        $('.photosMenu').show();
+        $('.aboutMe').hide();
+        $('.aboutMyself').hide();
+    };
+
+
+    document.body.insertBefore(tagDiv, document.querySelector('#canvas_back_ground')); // выбираю место где мне вставить тэг
+
+    window.addEventListener("resize", function () { // вешаем обработчик на изменение размера страницы
+        reSize();
+    });
+
+
+
+
+    // ================ CONTROLLER ================
+
+
+    function createDOM() {
+        tagDiv.classList.add('head'); // добавление класса к нашему тэгу
+        tagUl.classList.add('Menu');
+        tagUlLi[0].innerHTML = 'Home page';
+        tagUlLi[1].innerHTML = 'Price';
+        tagUlLi[2].innerHTML = 'About me';
+        tagAllDivs[2].classList.add('price');
+        tagAllDivs[2].innerHTML = 'Our price';
+        tagAllDivs[3].classList.add('aboutMe');
+        tagAllDivs[4].classList.add('aboutMyself');
+        tagAllDivs[4].innerHTML = 'Hello my name is Olia.' +
+            '<p></p>' + 'I`m from Belarus.' +
+            '<p></p>' + 'If you will use this site you can make an appointment with me and I can make you professional manicure.' +
+            '<p></p>' +  'From the left side you can see my usual day ';
+    }
+    console.log(tagAllDivs);
+
+    function homePage() {
+        $('.price').hide();
+        $('.aboutMe').hide();
+        $('.aboutMyself').hide();
+        $('.photosMenu').show();
+    }
+
+    function price() {
+        $('.photosMenu').hide();
+        $('.aboutMe').hide();
+        $('.aboutMyself').hide();
+        $('.price').show();
+
+
+    }
+    function aboutMe() {
+        $('.photosMenu').hide();
+        $('.price').hide();
+        $('.aboutMe').show();
+        $('.aboutMyself').show();
+    }
+
+    function LetMeKnowUName() {
+        if ( document.cookie !== null)
+         $('.hello').show();
+         else {
+           $('.hello').hide();
+           var v = document.getcookies.split(`=`);
+           console.log(v[1]);
+           tagDiv.innerHTML = `Hello my dear ${v[1]}`;
+         }
+    }
+
+    function PopUpHide() {
+       var valCookie = document.getElementById('helloInp').value;
+       document.cookie= `user_Name=${valCookie}; max-age=3600`;
+        var v = document.cookie.split(`=`);
+       console.log(v[1]);
+        tagDiv.innerHTML = `Hello my dear ${v[1]}`;
+           $('.hello').hide();
+    }
+
+
+    checkDistance = function (x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow( x2 - x1, 2) + Math.pow(y2 - y1 ,2));
+    };
+
+    Particle = function () {
+        this.x = Math.random() * w; // рандомное размещение наших точек
+        this.y = Math.random() * h; // рандомное размещение наших точек
+        this.speed = pointOpts.defaultSpeed + Math.random() * pointOpts.variantSpeed; // придавание скорости отдельной точке
+        this.directionAngle = Math.floor(Math.random() * 360); //указываем угол направления шариков
+        this.color = pointOpts.particleColor; // указываем цвет шариков
+        this.radios = pointOpts.defaultRadius + Math.random() * pointOpts.variantRadius; // указываем размер шариков
+        this.vector = {
+            x: Math.cos(this.directionAngle) * this.speed,
+            y: Math.sin(this.directionAngle) * this.speed
+        };
+        this.update = function () {
+            this.border();
+            this.x += this.vector.x;
+            this.y += this.vector.y;
+        };
+        this.border = function () { //касание стены странички и перенаправление в другую сторону
+            if (this.x >= w || this.x <= 0){
+                this.vector.x *= -1;
+            }
+            if (this.y >= h || this.y <= 0){
+                this.vector.y *= -1;
+            }
+            if (this.x > w) this.x = w;
+            if (this.y > h) this.y = h;
+            if (this.x < 0) this.x = 0;
+            if (this.y < 0) this.y = 0;
+        };
+        this.draw = function () { // отрисовка шаров
+            drawArea.beginPath();
+            drawArea.arc(this.x, this.y, this.radios, 0, Math.PI*2);
+            drawArea.closePath();
+            drawArea.fillStyle =this.color;
+            drawArea.fill();
+        };
+    };
+    function setup() {
+        resizeSite();
+        for (let i = 0; i < pointOpts.particleAmount; i++) {
+            particles.push(new Particle());
+        }
+        window.requestAnimationFrame(loop);
+    }
+    function loop(){
+        window.requestAnimationFrame(loop);
+        drawArea.clearRect(0,0,w,h);
+        for (let i = 0; i < particles.length; i++){
+            particles[i].update();
+            particles[i].draw();
+        }
+    }
+    function Photogalery () {
+        jQuery(function ($) {
+            var tok = '1020381904.1677ed0.6b04fad50dd2499898b06ca8ecf8f8b1', // я уже давал ссылку чуть выше
+                userid = 1020381904, // ID пользователя
+                numberPhotos = 25; // ну это понятно - сколько фоток хотим вывести
+
+            $.ajax({
+                url: 'https://api.instagram.com/v1/users/' + userid + '/media/recent',
+                dataType: 'jsonp',
+                type: 'GET',
+                data: {access_token: tok, count: numberPhotos}, // передаем параметры, которые мы указывали выше
+                success: function (result) {
+                    $(PhotoInst).addClass("photosMenu");
+                    for (x in result.data) {
+                        $(PhotoInst).append('<li style="list-style-type: none; display: inline; margin-right: 5px;"><img class="photosStyle" src="' + result.data[x].images.thumbnail.url + '"></li>'); // result.data[x].images.low_resolution.url - это URL картинки среднего разрешения, 306х306
+                        // result.data[x].images.thumbnail.url - URL картинки 150х150
+                        // result.data[x].images.standard_resolution.url - URL картинки 612х612
+                        // result.data[x].link - URL страницы данного поста в Инстаграм
+                    }
+                },
+                error: function (result) {
+                    console.log(result); // пишем в консоль об ошибках
+                }
+            });
+        });
+    }
+
+    Photogalery();
+    LetMeKnowUName();
+    createDOM();
+    resizeSite();
+    setup();
+
+
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Girls',     4],
+                ['Eat',      5],
+                ['Commute',  7],
+                ['Relax',  4],
+                ['Do exercises',  2],
+                ['Sleep',    2]
+            ]);
+
+            var options = {
+                title: 'My day schedule',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
+    </script>
+</body>
+</html>

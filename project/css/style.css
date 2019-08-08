@@ -1,0 +1,140 @@
+body {
+    padding: 0;
+    margin: 0;
+    background: #ffa7fd;
+}
+
+.head {
+    position: absolute;
+    left: 750px;
+    top: 50px;
+    color: palevioletred;
+    cursor: default;
+    font-size: 30px;
+}
+.Menu {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    list-style: none;
+    color: #a88282;
+    padding: 10px 50px 20px 10px ;
+    text-transform: uppercase;
+}
+.Menu li {
+    padding: 7px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border-left: 10px solid #c2e6f0;
+    box-shadow: 2px -2px 5px 0 rgba(0,0,0,.1),
+    -2px -2px 5px 0 rgba(0,0,0,.1),
+    2px 2px 5px 0 rgba(0,0,0,.1),
+    -2px 2px 5px 0 rgba(0,0,0,.1);
+    font-size: 20px;
+    letter-spacing: 2px;
+    transition: 0.3s all linear;
+}
+.Menu li:hover {
+    cursor: pointer;
+    background: #f3f3f3;
+}
+.Menu a {
+    text-decoration: none;
+    color: #000000;
+}
+.Menu a:hover{
+    color: #53fff8;
+}
+
+.photosMenu{
+    position: absolute;
+    left: 450px;
+    top: 140px;
+    right: 150px;
+}
+.photosStyle {
+    width: 150px;
+    height: 150px;
+    margin: 5px;
+    transition: 1s ease-out;
+    border-radius: 100px;
+    box-shadow: 0 0 0 3px #f78768 , 0 0 40px #6e81ff;
+}
+.photosStyle:hover{
+    transform: scale(1.1);
+    border-radius: 50px;
+    box-shadow: 0 0 0 3px #f7f270;
+}
+
+.price{
+    position: absolute;
+    top: 200px;
+    left: 400px;
+}
+.aboutMe{
+    position: absolute;
+    top: 200px;
+    left: 400px;
+}
+
+.aboutMyself{
+    position: absolute;
+    top: 200px;
+    left: 830px;
+}
+
+.hello{
+    background-color: #000; /* Чёрный фон */
+    height: 100%; /* Высота максимальна */
+    left: 0; /* Нулевой отступ слева */
+    opacity: 0.95; /* Степень прозрачности */
+    position: fixed; /* Фиксированное положение */
+    top: 0; /* Нулевой отступ сверху */
+    width: 100%; /* Ширина максимальна */
+    z-index: 100; /* Заведомо быть НАД другими элементами */
+}
+
+#helloLab{
+    color: lightgrey;
+    position: absolute;
+    left: 720px;
+    top: 300px;
+    font-family: 'Brush Script MT', Times, serif; /* Гарнитура текста */
+    font-size: 250%; /* Размер шрифта в процентах */
+    z-index: 101;
+}
+#helloInp{
+    border-radius: 10px;
+    border: 4px ridge #fff;
+    color: #1e90ff;
+    position: absolute;
+    left: 720px;
+    top: 350px;
+    font-size: 30px;
+
+}
+#helloInp:hover{
+    border: 4px ridge #ef9cb5;
+}
+#helloButt{
+    border-radius: 50px;
+    border: 4px ridge #fff;
+    position: absolute;
+    font-size: 50px;
+    left: 930px;
+    top: 400px;
+}
+#helloButt:hover{
+    border: 4px ridge #ef9cb5;
+    border-radius: 50px;
+    color: #1e90ff;
+}
+
+#canvas_back_ground {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
