@@ -6,11 +6,12 @@ body {
 
 .head {
     position: absolute;
-    left: 750px;
+    left: 700px;
     top: 50px;
     color: palevioletred;
     cursor: default;
-    font-size: 30px;
+    font-size: 50px;
+    font-family: 'Sacramento', cursive;
 }
 .Menu {
     position: fixed;
@@ -67,9 +68,17 @@ body {
 }
 
 .price{
+    color: #a88282;
+    text-transform: uppercase;
     position: absolute;
     top: 200px;
     left: 400px;
+}
+.photosPrice{
+    margin: 10px 10px;
+    height: 250px;
+    width: 250px;
+    right: 150px;
 }
 .aboutMe{
     position: absolute;
@@ -97,7 +106,7 @@ body {
 #helloLab{
     color: lightgrey;
     position: absolute;
-    left: 720px;
+    left: 680px;
     top: 300px;
     font-family: 'Brush Script MT', Times, serif; /* Гарнитура текста */
     font-size: 250%; /* Размер шрифта в процентах */
@@ -108,7 +117,7 @@ body {
     border: 4px ridge #fff;
     color: #1e90ff;
     position: absolute;
-    left: 720px;
+    left: 680px;
     top: 350px;
     font-size: 30px;
 
@@ -121,7 +130,7 @@ body {
     border: 4px ridge #fff;
     position: absolute;
     font-size: 50px;
-    left: 930px;
+    left: 900px;
     top: 400px;
 }
 #helloButt:hover{
@@ -136,5 +145,45 @@ body {
     top: 0;
     left: 0;
     z-index: -1;
+}
+
+.timer{
+    position: absolute;
+    left: 550px;
+    top: 160px;
+}
+.announcement{
+    position: absolute;
+    font-size: 20px;
+    top: 200px;
+    left: 400px;
+    color: #a88282;
+}
+.rate{
+    position: absolute;
+    left: 0;
+    top: -20px;
+    text-transform: uppercase;
+    color: #a88282;
+    cursor: default;
+}
+.rating {
+    position: absolute;
+    display: flex;
+    left: 1200px;
+    top: 600px;
+
+}
+.rating-item {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background-color: green;
+    border: 2px solid #ffa7fd;
+    cursor: pointer;
+}
+
+.rating-item.active{
+    background-color: #ffb71d;
 }
 

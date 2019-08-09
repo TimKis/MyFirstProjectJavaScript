@@ -6,10 +6,14 @@
     <link rel="stylesheet" type="text/css" href="project/css/style.css">
 </head>
 <body>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Sacramento&display=swap');
+</style>
     <canvas id="canvas_back_ground"></canvas>
     <ul class="Menu">
         <li onclick="homePage()"></li>
         <li onclick="price()"></li>
+        <li onclick="curses()"></li>
         <li onclick="aboutMe()"></li>
     </ul>
     <div></div>
@@ -21,6 +25,16 @@
     <div></div>
     <div id="piechart_3d"></div>
     <div></div>
+    <div>
+        <div class="rating-item active" data-rate="1" onclick="thanks()"></div>
+        <div class="rating-item" data-rate="2" onclick="thanks()"></div>
+        <div class="rating-item" data-rate="3" onclick="thanks()"></div>
+        <div class="rating-item" data-rate="4" onclick="thanks()"></div>
+        <div class="rating-item" data-rate="5" onclick="thanks()"></div>
+        <div></div>
+    </div>
+
+    <div><script src="//megatimer.ru/get/01fbc90bf44c4a81b76dbeeac4a87605.js"></script></div>
     <div></div>
 
 
@@ -31,13 +45,14 @@
 <script>
 
     // ================ MODEL ================
+
     var tagDiv = document.createElement('div'); // создание тега
     var tagUl = document.querySelector('ul');
     var tagUlLi = document.querySelectorAll('ul li'); // пробегаем по всем li
     var tagAllDivs = document.querySelectorAll('div');
     var PhotoInst =  tagAllDivs[0];
     var particles = [];
-
+    var ratingItem = document.querySelectorAll('.rating-item');
     var resizeSite =  function () { // хранения  размера страницы
         w = canvasBody.width = window.innerWidth;
         h = canvasBody.height = window.innerHeight;
@@ -49,7 +64,6 @@
         }, delay);
     };
     var delay = 200, tid;
-
     const pointOpts = { //свойства шарика
         particleColor: "#fff",
         particleAmount: 100,
@@ -67,61 +81,106 @@
 
     window.onload = function firstime(){
         $('.price').hide();
-        $('.photosMenu').show();
         $('.aboutMe').hide();
         $('.aboutMyself').hide();
+        $('.rating').hide();
+        $('.timer').hide();
+        $('.announcement').hide();
+        $('.photosMenu').show();
     };
-
-
     document.body.insertBefore(tagDiv, document.querySelector('#canvas_back_ground')); // выбираю место где мне вставить тэг
-
     window.addEventListener("resize", function () { // вешаем обработчик на изменение размера страницы
         reSize();
     });
-
-
+    tagAllDivs[5].onclick = function(e){
+        var target = e.target;
+        if(target.classList.contains('rating-item')){
+            removeClass(ratingItem,'current-active');
+            target.classList.add('active','current-active');
+        }
+    };
+    tagAllDivs[5].onmouseover = function(e) {
+        var target = e.target;
+        if(target.classList.contains('rating-item')){
+            removeClass(ratingItem,'active');
+            target.classList.add('active');
+            mouseOverActiveClass(ratingItem)
+        }
+    };
+    tagAllDivs[5].onmouseout = function(){
+        addClass(ratingItem,'active');
+        mouseOutActiveClas(ratingItem);
+    };
 
 
     // ================ CONTROLLER ================
-
 
     function createDOM() {
         tagDiv.classList.add('head'); // добавление класса к нашему тэгу
         tagUl.classList.add('Menu');
         tagUlLi[0].innerHTML = 'Home page';
         tagUlLi[1].innerHTML = 'Price';
-        tagUlLi[2].innerHTML = 'About me';
+        tagUlLi[2].innerHTML = 'Curses';
+        tagUlLi[3].innerHTML = 'About me';
         tagAllDivs[2].classList.add('price');
-        tagAllDivs[2].innerHTML = 'Our price';
+        tagAllDivs[2].innerHTML = 'Our price' +
+        '<div style="cursor: default"><p><img class="photosPrice" src="project/photos/Slayders.jpg"></p>Slayders 45$</div>' +
+        '<div style="position: absolute; top: 20px; left: 300px; cursor: default"><p><img class="photosPrice" src="project/photos/Art.jpg"></p>ART 55$</div>' +
+        '<div style="position: absolute; top: 20px; left: 600px; cursor: default"><p><img class="photosPrice" src="project/photos/Top.jpg"></p>Top 20$</div>';
         tagAllDivs[3].classList.add('aboutMe');
         tagAllDivs[4].classList.add('aboutMyself');
         tagAllDivs[4].innerHTML = 'Hello my name is Olia.' +
             '<p></p>' + 'I`m from Belarus.' +
             '<p></p>' + 'If you will use this site you can make an appointment with me and I can make you professional manicure.' +
             '<p></p>' +  'From the left side you can see my usual day ';
+        tagAllDivs[5].classList.add('rating');
+        tagAllDivs[11].classList.add('rate');
+        tagAllDivs[11].innerHTML ='Please rate my site.';
+        tagAllDivs[12].classList.add('timer');
+        tagAllDivs[14].classList.add('announcement');
+        tagAllDivs[14].innerHTML = 'next curses :';
+
     }
     console.log(tagAllDivs);
 
     function homePage() {
+        $('.announcement').hide();
         $('.price').hide();
         $('.aboutMe').hide();
         $('.aboutMyself').hide();
+        $('.rating').hide();
+        $('.timer').hide();
         $('.photosMenu').show();
     }
-
     function price() {
+        $('.announcement').hide();
         $('.photosMenu').hide();
         $('.aboutMe').hide();
         $('.aboutMyself').hide();
+        $('.rating').hide();
+        $('.timer').hide();
         $('.price').show();
 
 
     }
     function aboutMe() {
+        $('.announcement').hide();
         $('.photosMenu').hide();
         $('.price').hide();
+        $('.timer').hide();
         $('.aboutMe').show();
         $('.aboutMyself').show();
+        $('.rating').show();
+    }
+    function curses() {
+        $('.aboutMe').hide();
+        $('.photosMenu').hide();
+        $('.price').hide();
+        $('.aboutMyself').hide();
+        $('.rating').hide();
+        $('.timer').show();
+        $('.announcement').show();
+
     }
 
     function LetMeKnowUName() {
@@ -130,25 +189,26 @@
          else {
            $('.hello').hide();
            var v = document.getcookies.split(`=`);
-           console.log(v[1]);
            tagDiv.innerHTML = `Hello my dear ${v[1]}`;
          }
     }
-
     function PopUpHide() {
-       var valCookie = document.getElementById('helloInp').value;
-       document.cookie= `user_Name=${valCookie}; max-age=3600`;
+        var valCookie = document.getElementById('helloInp').value;
+        document.cookie = `user_Name=${valCookie}; max-age=3600`;
         var v = document.cookie.split(`=`);
-       console.log(v[1]);
         tagDiv.innerHTML = `Hello my dear ${v[1]}`;
-           $('.hello').hide();
+        if(valCookie !== "" &&   isNaN(valCookie))
+        $('.hello').hide();
+        else{
+            alert(`Please check name.`)
+        }
     }
-
-
+    function thanks(){
+        alert(`Thank you for rate.`)
+    }
     checkDistance = function (x1, y1, x2, y2) {
         return Math.sqrt(Math.pow( x2 - x1, 2) + Math.pow(y2 - y1 ,2));
     };
-
     Particle = function () {
         this.x = Math.random() * w; // рандомное размещение наших точек
         this.y = Math.random() * h; // рандомное размещение наших точек
@@ -202,9 +262,9 @@
     }
     function Photogalery () {
         jQuery(function ($) {
-            var tok = '1020381904.1677ed0.6b04fad50dd2499898b06ca8ecf8f8b1', // я уже давал ссылку чуть выше
+            var tok = '1020381904.1677ed0.6b04fad50dd2499898b06ca8ecf8f8b1', // мой Юзер токен от инсты
                 userid = 1020381904, // ID пользователя
-                numberPhotos = 25; // ну это понятно - сколько фоток хотим вывести
+                numberPhotos = 15; // ну это понятно - сколько фоток хотим вывести
 
             $.ajax({
                 url: 'https://api.instagram.com/v1/users/' + userid + '/media/recent',
@@ -225,6 +285,38 @@
                 }
             });
         });
+    }
+    function removeClass(arr) {
+        for(var i = 0, iLen = arr.length; i <iLen; i ++) {
+            for(var j = 1; j < arguments.length; j ++) {
+                ratingItem[i].classList.remove(arguments[j]);
+            }
+        }
+    }
+    function addClass(arr) {
+        for(var i = 0, iLen = arr.length; i <iLen; i ++) {
+            for(var j = 1; j < arguments.length; j ++) {
+                ratingItem[i].classList.add(arguments[j]);
+            }
+        }
+    }
+    function mouseOverActiveClass(arr){
+        for(var i = 0, iLen = arr.length; i < iLen; i++) {
+            if(arr[i].classList.contains('active')){
+                break;
+            }else {
+                arr[i].classList.add('active');
+            }
+        }
+    }
+    function mouseOutActiveClas(arr){
+        for(var i = arr.length-1; i >=1; i--) {
+            if(arr[i].classList.contains('current-active')){
+                break;
+            }else {
+                arr[i].classList.remove('active');
+            }
+        }
     }
 
     Photogalery();
